@@ -13,6 +13,14 @@ class PostPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('${post.title}'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.favorite_border),
+            onPressed: () => {
+              // 
+            },
+          ),
+        ],
       ),
       body: ListView(
         children: [

@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-
 import 'package:flutter_paginator/flutter_paginator.dart';
 
 import '../classes/Post.dart';
@@ -156,7 +155,6 @@ class HomePageState extends State<HomePage> {
           MaterialPageRoute(builder: (context) => PostPage(post: post)),
         )
       },
-      // trailing: IconButton(icon: Icon(Icons.more_vert),),
     );
   }
 
