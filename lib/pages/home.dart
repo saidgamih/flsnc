@@ -45,26 +45,12 @@ class HomePageState extends State<HomePage> {
         child: ListView(
           children: [
             Container(
-                padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-                color: Colors.red[600],
-                child: Row(
-                  children: [
-                    Text(
-                      "TUDIO",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      "WEB",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 25,
-                          fontWeight: FontWeight.w100),
-                    ),
-                  ],
-                )),
+                padding: EdgeInsets.symmetric(vertical: 30, horizontal: 30),
+                child: Image.asset(
+                    "images/logo_h.png",
+                ),
+            ),
+            Divider(),
             ListTile(
               leading: Icon(Icons.home),
               title: Text('Home'),
