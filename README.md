@@ -1,2 +1,2 @@
-# An adventure in the jungles of flutter
+# Serieuse project needs a lot of objects
 ### By Said Gamih
