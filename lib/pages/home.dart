@@ -5,9 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter_paginator/flutter_paginator.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+import './login.dart';
 import '../classes/Post.dart';
 import './post.dart';
+
+final storage = FlutterSecureStorage();
 
 class HomePage extends StatefulWidget {
   @override
@@ -18,6 +22,18 @@ class HomePage extends StatefulWidget {
 
 class HomePageState extends State<HomePage> {
   GlobalKey<PaginatorState> paginatorGlobalKey = GlobalKey();
+
+  Future<bool> _attemptLogout() async {
+    String token = await storage.read(key: 'access_token');
+    Uri uri = Uri.http('said.saysusolutions.site', 'api/auth/logout');
+    var response = await http.post(uri, headers: {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer ' + token
+    });
+
+    if (response.statusCode == 200) return true;
+    return false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,23 +48,24 @@ class HomePageState extends State<HomePage> {
             },
           ),
         ),
-        actions: <Widget>[
+        actions: [
           IconButton(
-            icon: Icon(Icons.more_vert),
-            onPressed: () {
-              //
-            },
-          ),
+              icon: Icon(Icons.logout),
+              onPressed: () async {
+                bool res = await _attemptLogout();
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => LoginPage()));
+              }),
         ],
       ),
       drawer: Drawer(
         child: ListView(
           children: [
             Container(
-                padding: EdgeInsets.symmetric(vertical: 30, horizontal: 30),
-                child: Image.asset(
-                    "images/logo_h.png",
-                ),
+              padding: EdgeInsets.symmetric(vertical: 30, horizontal: 30),
+              child: Image.asset(
+                "images/logo_h.png",
+              ),
             ),
             Divider(),
             ListTile(
@@ -90,15 +107,23 @@ class HomePageState extends State<HomePage> {
   // Future of posts
   Future<PostData> fetchPosts(int page) async {
     try {
+      String token = await storage.read(key: 'access_token');
       Uri uri = Uri.http(
           'said.saysusolutions.site', 'api/posts', {'page': page.toString()});
-      http.Response response = await http.get(uri);
-      return PostData.fromResponse(response);
+      http.Response response = await http.get(uri, headers: {
+        'Authorization': "Bearer ${token ?? ''} ",
+        'Accept': "application/json"
+      });
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        return PostData.fromResponse(response);
+      } else {
+        throw Exception();
+      }
     } catch (e) {
       if (e is IOException) {
         return PostData.withError('Please check your internet connection.');
       } else {
-        print(e.toString());
         return PostData.withError('Something went wrong.');
       }
     }

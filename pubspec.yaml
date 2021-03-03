@@ -1,4 +1,4 @@
-name: nav_app
+name: snc
 description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
@@ -23,8 +23,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  http:
+  flutter_secure_storage: ^3.3.5
+  http: ^0.12.2
   flutter_paginator: ^0.0.6
+  get_it: ^5.0.6
 
 
   # The following adds the Cupertino Icons font to your application.
